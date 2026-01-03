@@ -1,0 +1,69 @@
+name: 🚀 Zynicon Social Media Automation (2x Daily)
+
+on:
+  schedule:
+    - cron: '0 14 * * *'   # 7:30 PM IST (best US morning time 9 AM EST)
+    - cron: '0 23 * * *'   # 4:30 AM IST (best US evening time 6 PM EST)
+
+  workflow_dispatch:       # Allow manual runs
+
+jobs:
+  upload-reel:
+    name: 📤 Upload to Instagram & YouTube
+    runs-on: ubuntu-latest
+
+    env:
+      EXTENDED_ACCESS_TOKEN: ${{ secrets.EXTENDED_ACCESS_TOKEN }}
+      GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+      GOOGLE_CREDS_JSON: ${{ secrets.GOOGLE_CREDS_JSON }}
+      CLIENT_SECRETS_FILE: ${{ secrets.CLIENT_SECRETS_FILE }}
+      TOKEN_FILE: ${{ secrets.TOKEN_FILE }}
+      GOOGLE_SPREADSHEET_NAME: ${{ secrets.GOOGLE_SPREADSHEET_NAME }}
+      GOOGLE_SPREADSHEET_URL: ${{ secrets.GOOGLE_SPREADSHEET_URL }}
+      GOOGLE_WORKSHEET_NAME: ${{ secrets.GOOGLE_WORKSHEET_NAME }}
+      INSTAGRAM_PAGE_POSTS_ACCESS_ID: ${{ secrets.INSTAGRAM_PAGE_POSTS_ACCESS_ID }}
+      INSTAGRAM_USER_ACCESS_DATA_ID: ${{ secrets.INSTAGRAM_USER_ACCESS_DATA_ID }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      OPENROUTER_API_KEY2: ${{ secrets.OPENROUTER_API_KEY2 }}
+      TRACKING_FILE: ${{ secrets.TRACKING_FILE }}
+      UPLOAD_WATERMARKED_VIDEO_TO_DRIVE_ID: ${{ secrets.UPLOAD_WATERMARKED_VIDEO_TO_DRIVE_ID }}
+      CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+      CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+      CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+      GMAIL_USER: ${{ secrets.GMAIL_USER }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      OG_DRIVE_FOLDER_ID: ${{ secrets.OG_DRIVE_FOLDER_ID }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 💾 Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.local
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 🐍 Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: 🛠 Install system-level dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-eng \
+            libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev
+
+      - name: 📦 Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🚀 Run main automation script
+        run: python main.py

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "social-media-automation-479601",
+  "private_key_id": "c80a04db259ec1788b61231f1cbf776557fa98bf",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCtVi/njzf4P7gP\nffbHdXBIaeDuNyBS6tdWUOV2Iv3VWEUq14Il2RDoJIXXyeSi1qWKIHrGlFbtBV7p\ngZtFuL9dPN2Svk1aOoJZF9CemH+KRjw9CbhFEgdMeYmZd9pck20tcxXl3jhtgD2W\nsaUj0xmDtkVplJTahv9IwK1disC6WaIRce2Ok3/HN7YwNHJtPleEO77VCQtOeM1o\nhlpOHhl9UweM09OkkkILm9TdeuwkFWfUt7iOZqfnYsepjTprm2InmTfnygV+8tv9\nv3idU8oRg+R2Wt4gGfdwu3bcKUFCH/8JMiavvQJXtbl7gP5umAzbYdr146ioXfpl\nC8UtKVebAgMBAAECggEAKtJcglHE63zeXWFqmmr+Yr1ZdrBCuYlPyoCwt2c8mzyz\n1boo6m2+OgNv11gGtl3dxopwmmdiNCr8ACbnM6nJCOE1AgAmfvBubFEwVkXpWEEy\nt4eTsOibyf5KipHr7av0MGK6ma+09ARW8sgPOpL3vizE6CjvPy9TmOcUzUOuijqb\nMW05bP1F3EeN1sGaoTXJ0WjFmTThPWeG2yTyUoVxaE3CXeqD1QdnwJcZojbFZJvg\nC2h2ORrnwrcEJTgKuNHr1BPYhkMLZKMzWS1EZxyUCRDipF9FONs3ieU2FbxtD2/x\nIJTkMq9OGsOvZ8jRhz69YEgke8fSS1cTFYfSZEQvtQKBgQDiK5krd7NFQ0LTZmdW\nIDrqIwoux87bTUikXa0TQE/2OH2lgMRhS8Ha8sQiycj+6V27Oa84/SEx/KSzOyIM\nYbOxf1aXyWZobhguv9CSErZf8VzMg8nesUmbz4UOVyc2Uh/XgdOZRtah/58zhkNG\nc2ZVvImSNfm41c69ype1/jTjLQKBgQDEMreAIJbNHPnfZEptpbPm05cS7wb3WsXy\n4GW3zNCU8YjeBjIwZT0EXFZaHoD81mNCxewlUiYZo0LabBdk9H5hq3OTtnMVN2TS\n+oSc3lqrvfaKUVPaL7HDjPYuaYjvl9+zJWZFoZO5Sr0Anje2kq6oZDn7EVrzNijl\nfKRNWpIC5wKBgQCNH4Eykz0kIcUH3aTrI68/O1/2MqzLQBzsmpsNIRsD2tnjtEZV\nI40xjjt+LYSiMoFO+r5wA9p7s1Ydk+855JjYT0l76qpgzRl/yiZdjxmHIjayUiVb\nNCpm84TlntIT3giKUzLyODZi3Pq8jrFZu1YGd18sAUvx3k9jM4+YeqcLfQKBgEAu\nkybgAlUBGKDCjzKFVW+6Yh54gR/j2wOT8tKItucyiGKRRlPcmnRVvI3okqujen86\nfgDLedlDNjh7yb9l1/4dd0aoFceoAlyeRUmH18N89izTZAnpNk7RSyttrLUsSqqx\nHl7C969SyrdsCq+4FljRyMHgMI+FdSV1e84uRbubAoGBAJIKxpi0Z/a0X3QV3XUE\niSeFJDXUjcWv7NSGeexRQjC2o3xKL5/P8QkyPNL1FkOICEWLLBDo4ZdAhlYOWh+C\n/7KYgkxYQX8iT43UPTynpwW8cfAeZEAYRj8PLmEV0UwjzOrum6UDiwWm1dLRLE2v\n0yFSh+n6BvfeJDIziid8bs0/\n-----END PRIVATE KEY-----\n",
+  "client_email": "cryptotenchi@social-media-automation-479601.iam.gserviceaccount.com",
+  "client_id": "106883636848491420433",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cryptotenchi%40social-media-automation-479601.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

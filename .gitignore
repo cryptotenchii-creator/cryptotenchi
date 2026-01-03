@@ -197,3 +197,13 @@ cython_debug/
 # Ignore media files that are not part of the source code.
 assets/ 
 *.test_main.py
+
+# Secrets
+*.json
+*.pickle
+social-creds/
+youtube_creds/
+
+# Python cache
+__pycache__/
+*.pyc

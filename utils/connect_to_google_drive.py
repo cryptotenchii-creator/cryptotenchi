@@ -58,3 +58,17 @@ def run_download_pipeline():
     print(f"[✅] Downloaded to: {local_path}")
 
     return file_name, file_id
+def move_file_to_folder(file_id, new_folder_id):
+    file = drive_service.files().get(
+        fileId=file_id,
+        fields="parents"
+    ).execute()
+
+    previous_parents = ",".join(file.get("parents"))
+
+    drive_service.files().update(
+        fileId=file_id,
+        addParents=new_folder_id,
+        removeParents=previous_parents,
+        fields="id, parents"
+    ).execute()

@@ -1,7 +1,10 @@
 import os
 from dotenv import load_dotenv
 
-from utils.connect_to_google_drive import run_download_pipeline
+from utils.connect_to_google_drive import (
+    run_download_pipeline,
+    move_file_to_folder
+)
 from utils.extract_text_from_thumbnail import run_thumbnail_ocr_pipeline
 from utils.generate_content_from_LLM import (
     run_caption_generation_pipeline,
@@ -19,18 +22,15 @@ from utils.upload_final_video_to_cloudinary import run_upload_to_cloudinary_pipe
 
 load_dotenv()
 
+POSTED_DRIVE_FOLDER_ID = os.getenv("POSTED_DRIVE_FOLDER_ID")
+
 
 def get_actual_video_path(video_file):
-    """
-    Handles case where Google Drive download gives a folder instead of a file
-    """
     base_path = os.path.join("assets", "OG_video", video_file)
 
-    # If it's already a file → return
     if os.path.isfile(base_path):
         return base_path
 
-    # If it's a folder → find first mp4 inside
     if os.path.isdir(base_path):
         for file in os.listdir(base_path):
             if file.lower().endswith((".mp4", ".mov", ".mkv")):
@@ -52,15 +52,13 @@ def process_video(video_file, drive_file_id):
         print("\n📺 STEP 2: Extracting first frame...")
         image_file = extract_frame_from_WT_removed_video(downloaded_video)
 
-        if image_file is None:
-            print("[⚠️] Frame extraction failed. Continuing without OCR.")
-            thumbnail_text = ""
-        else:
-            print("\n🖼️ STEP 3: Extracting text from thumbnail...")
+        if image_file:
             try:
                 thumbnail_text = run_thumbnail_ocr_pipeline(image_file)
             except Exception:
                 thumbnail_text = ""
+        else:
+            thumbnail_text = ""
 
         print("\n✍️ STEP 4: Generating Instagram caption...")
         caption = run_caption_generation_pipeline(thumbnail_text)
@@ -75,30 +73,25 @@ def process_video(video_file, drive_file_id):
 
         print("\n☁️ STEP 6: Uploading video to Cloudinary...")
         video_url = run_upload_to_cloudinary_pipeline(downloaded_video)
-
         if not video_url:
-            print("[❌] Cloudinary upload failed.")
             return False
 
-        print(f"[✅] Cloudinary URL: {video_url}")
-
         print("\n📤 STEP 7: Uploading to Instagram...")
-        try:
-            instagram_url = run_instagram_upload_pipeline(video_url, caption)
-            if instagram_url:
-                update_links_in_sheet(video_name=video_file, instagram_link=instagram_url)
-        except Exception as e:
-            print("Instagram upload error:", e)
+        instagram_url = run_instagram_upload_pipeline(video_url, caption)
+        if instagram_url:
+            update_links_in_sheet(video_name=video_file, instagram_link=instagram_url)
 
         print("\n🚀 STEP 8: Uploading to YouTube Shorts...")
-        try:
-            youtube_url = run_youtube_upload_pipeline(
-                downloaded_video, title, description, tags
-            )
-            if youtube_url:
-                update_links_in_sheet(video_name=video_file, youtube_link=youtube_url)
-        except Exception as e:
-            print("YouTube upload error:", e)
+        youtube_url = run_youtube_upload_pipeline(
+            downloaded_video, title, description, tags
+        )
+        if youtube_url:
+            update_links_in_sheet(video_name=video_file, youtube_link=youtube_url)
+
+        # ✅ MOVE FILE ONLY AFTER SUCCESS
+        if instagram_url and youtube_url:
+            move_file_to_folder(drive_file_id, POSTED_DRIVE_FOLDER_ID)
+            print("[✅] Video moved to POSTED folder")
 
         return True
 
@@ -108,23 +101,19 @@ def process_video(video_file, drive_file_id):
 
 
 def main():
-    while True:
-        print("\n📥 STEP 1: Fetching next video from Google Drive...")
+    print("\n📥 STEP 1: Fetching next video from Google Drive...")
+    video_file, drive_file_id = run_download_pipeline()
 
-        video_file, drive_file_id = run_download_pipeline()
+    if not video_file:
+        print("[✅] No new videos available.")
+        return
 
-        if not video_file:
-            print("[✅] No new videos available.")
-            break
+    success = process_video(video_file, drive_file_id)
 
-        success = process_video(video_file, drive_file_id)
-
-        if not success:
-            print("\n⏭️ Skipping this video...\n")
-            continue
-
+    if success:
         print("\n✅ Video processed & uploaded successfully!")
-        break
+    else:
+        print("\n⏭️ Video skipped.")
 
 
 if __name__ == "__main__":

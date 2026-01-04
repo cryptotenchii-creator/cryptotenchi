@@ -19,6 +19,8 @@ from utils.upload_video_to_youtube import run_youtube_upload_pipeline
 from utils.google_sheets_tracker import update_links_in_sheet
 from utils.extract_frame_from_video import extract_frame_from_WT_removed_video
 from utils.upload_final_video_to_cloudinary import run_upload_to_cloudinary_pipeline
+from utils.connect_to_google_drive import delete_file_from_drive
+
 
 load_dotenv()
 
@@ -89,9 +91,13 @@ def process_video(video_file, drive_file_id):
             update_links_in_sheet(video_name=video_file, youtube_link=youtube_url)
 
         # ✅ MOVE FILE ONLY AFTER SUCCESS
+        # if instagram_url and youtube_url:
+        #     move_file_to_folder(drive_file_id, POSTED_DRIVE_FOLDER_ID)
+        #     print("[✅] Video moved to POSTED folder")
+
+        # 🗑️ DELETE FILE ONLY AFTER SUCCESS
         if instagram_url and youtube_url:
-            move_file_to_folder(drive_file_id, POSTED_DRIVE_FOLDER_ID)
-            print("[✅] Video moved to POSTED folder")
+            delete_file_from_drive(drive_file_id)
 
         return True
 

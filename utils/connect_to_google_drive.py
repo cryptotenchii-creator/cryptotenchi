@@ -72,3 +72,11 @@ def move_file_to_folder(file_id, new_folder_id):
         removeParents=previous_parents,
         fields="id, parents"
     ).execute()
+def delete_file_from_drive(file_id):
+    try:
+        drive_service.files().delete(fileId=file_id).execute()
+        print("[🗑️] File deleted from Google Drive")
+        return True
+    except Exception as e:
+        print("[❌] Failed to delete file from Drive:", e)
+        return False
